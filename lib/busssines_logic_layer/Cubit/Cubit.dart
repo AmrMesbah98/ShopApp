@@ -199,7 +199,7 @@ class ShopCubit extends Cubit<ShopStates> {
 
   SearchModel? searchModel;
 
-  void search(String text)
+   search(String text)
   {
     emit(SearchLoadingState());
     DioHelpper.PostData(url: SEARCH,
