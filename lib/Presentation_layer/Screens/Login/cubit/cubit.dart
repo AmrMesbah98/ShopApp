@@ -4,6 +4,7 @@ import 'package:shopapp/Constant/End_Points.dart';
 import 'package:shopapp/Data_layer/Models/ShopModel.dart';
 import 'package:shopapp/Presentation_layer/Screens/Login/cubit/state.dart';
 
+import '../../../../Constant/const.dart';
 import '../../../../helper/dio_helper.dart';
 
 class ShopLoginCubit extends Cubit<ShopLoginState> {
@@ -24,6 +25,7 @@ class ShopLoginCubit extends Cubit<ShopLoginState> {
     ).then((value) {
       //print(value.data);
       shopLoginModel = ShopLoginModel.fromJson(value.data);
+
       emit(ShopLoginSuccessState(shopLoginModel!));
     }).catchError((error) {
       emit(ShopLoginErrorState(error.toString()));
@@ -39,4 +41,7 @@ class ShopLoginCubit extends Cubit<ShopLoginState> {
         isPassword ? Icons.visibility_off_outlined : Icons.visibility_outlined;
     emit(ShopChangePaswwordSuccessState());
   }
+
+
+
 }

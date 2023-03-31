@@ -6,15 +6,15 @@ import 'package:shopapp/busssines_logic_layer/Cubit/Cubit.dart';
 import 'package:shopapp/busssines_logic_layer/Cubit/states.dart';
 
 import '../Login/login_screen.dart';
+import '../Register/register_screen.dart';
 
 class ShopLayout extends StatelessWidget {
   const ShopLayout({Key? key}) : super(key: key);
 
   @override
   Widget build(BuildContext context) {
-    return BlocProvider(
-      create: (context) => ShopCubit()..getHomeData()..getCategory()..getFavourite(),
-      child: BlocConsumer<ShopCubit, ShopStates>(
+    return
+      BlocConsumer<ShopCubit, ShopStates>(
         listener: (context, state) => {},
         builder: (context, state) {
           var Cubit = ShopCubit.get(context);
@@ -27,17 +27,10 @@ class ShopLayout extends StatelessWidget {
                   }));
                 }, icon: Icon(Icons.search,)),
                 IconButton(onPressed: (){
-                  CacheHelper.removeData(key: 'token').then((value) {
-                    if (value) {
-                      Navigator.of(context).pushAndRemoveUntil(
-                        MaterialPageRoute(builder: (_) {
-                          return ShopLogin();
-                        }),
-                            (Route<dynamic> route) => false,
-                      );
-                    }
-                  });
-                }, icon: Icon(Icons.exit_to_app))
+                  Navigator.of(context).push(MaterialPageRoute(builder: (_){
+                    return ShopRegisterScreen();
+                  }));
+                }, icon: Icon(Icons.new_label))
               ],
               title: const Text('salla'),
             ),
@@ -59,7 +52,6 @@ class ShopLayout extends StatelessWidget {
             ),
           );
         },
-      ),
     );
   }
 }

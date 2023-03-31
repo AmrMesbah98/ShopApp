@@ -44,4 +44,21 @@ class DioHelpper {
 
     return await dio!.post(url, data: data);
   }
+
+
+
+
+  static Future<Response> putData(
+      {String token = '',
+        String lang = 'en',
+        required String url,
+        //required Map<String, dynamic> query,
+        required Map<String, dynamic> data}) async {
+    dio!.options.headers = {
+      'lang': lang,
+      'Authorization': token ?? '',
+    };
+
+    return await dio!.put(url, data: data);
+  }
 }

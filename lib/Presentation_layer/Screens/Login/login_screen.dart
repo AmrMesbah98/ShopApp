@@ -2,6 +2,7 @@ import 'package:conditional_builder_null_safety/conditional_builder_null_safety.
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:fluttertoast/fluttertoast.dart';
+import 'package:shopapp/Constant/const.dart';
 import 'package:shopapp/Presentation_layer/Screens/Login/cubit/cubit.dart';
 import 'package:shopapp/Presentation_layer/Screens/Login/cubit/state.dart';
 import 'package:shopapp/Presentation_layer/Screens/Register/register_screen.dart';
@@ -39,6 +40,8 @@ class ShopLogin extends StatelessWidget {
                     ),
 
                     CacheHelper.saveData(key: 'token', value: state.shopLoginModel.data!.token  ).then((value) {
+                      print(state.shopLoginModel.data!.token);
+
                       Navigator.of(context).pushAndRemoveUntil(
                         MaterialPageRoute(builder: (_) {
                           return const ShopLayout();

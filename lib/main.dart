@@ -1,7 +1,9 @@
 import 'package:bloc/bloc.dart';
 import 'package:flutter/material.dart';
+import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:shopapp/Constant/Themes.dart';
 import 'package:shopapp/Presentation_layer/Screens/Onboarding/on_boarding_screen.dart';
+import 'package:shopapp/busssines_logic_layer/Cubit/Cubit.dart';
 import 'package:shopapp/helper/dio_helper.dart';
 
 import 'Constant/bloc_observer.dart';
@@ -14,18 +16,18 @@ void main() async {
   Bloc.observer = MyBlocObserver();
   await CacheHelper.init();
   await DioHelpper.init();
-  bool? onBoarding =await CacheHelper.getData('OnBoarding');
+  bool? onBoarding = await CacheHelper.getData('OnBoarding');
   String? token = await CacheHelper.getData('token');
   print(onBoarding);
 
   Widget? widget;
 
-  if(onBoarding != null)
-  {
-    if(token != null) widget = ShopLayout();
-    else ShopLogin();
-  }else
-  {
+  if (onBoarding != null) {
+    if (token != null)
+      widget = ShopLayout();
+    else
+      ShopLogin();
+  } else {
     widget = OnBoardingScreen();
   }
 
@@ -41,16 +43,16 @@ class ShopApp extends StatelessWidget {
   const ShopApp({super.key, required this.startWidget});
 
 
-
-
-
   @override
   Widget build(BuildContext context) {
-    return MaterialApp(
-      debugShowCheckedModeBanner: false,
-      darkTheme: darkTheme,
-      theme: lightTheme,
-      home: startWidget
+    return BlocProvider(
+      create: (context) => ShopCubit()..getHomeData()..getCategory()..getUserModel(),
+      child: MaterialApp(
+          debugShowCheckedModeBanner: false,
+          darkTheme: darkTheme,
+          theme: lightTheme,
+          home: startWidget
+      ),
     );
   }
 }
