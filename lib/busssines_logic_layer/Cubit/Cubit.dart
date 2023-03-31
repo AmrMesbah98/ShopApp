@@ -92,7 +92,7 @@ class ShopCubit extends Cubit<ShopStates> {
     emit(ShopChangeFavouriteState());
 
     DioHelpper.PostData(
-            url: FaVOURITE, data: {'product_id': proudctId}, token: mytoken)
+            url: FAVOURITE, data: {'product_id': proudctId}, token: mytoken)
         .then((value) {
       changeFavouriteID = ChangeFavouriteID.fromJson(value.data);
 
@@ -111,25 +111,23 @@ class ShopCubit extends Cubit<ShopStates> {
     });
   }
 
-  // FavouriteModel? favouriteModel ;
-  //
-  // void getFavourite() {
-  //   emit(ShopLoadingCategoryState());
-  //
-  //   DioHelpper.GetData(
-  //     url: FaVOURITE,
-  //     token: mytoken,
-  //   ).then((value) {
-  //     favouriteModel = FavouriteModel.fromJson(value.data!);
-  //
-  //     print(favouriteModel!.data!.toString());
-  //
-  //     emit(ShopSucessGetFavouriteState());
-  //   }).catchError((error) {
-  //     print(error.toString());
-  //     emit(ShopErrorGetFavouriteState());
-  //   });
-  // }
+  FavouriteModel? favouriteModel ;
+  void getFavourite()  {
+  emit(ShopLoadingGetFavouriteState());
+    DioHelpper.GetData(
+      url: FAVOURITE,
+      token: mytoken,
+    ).then((value)  {
+      favouriteModel =  FavouriteModel.fromJson(value.data!);
+
+      print(favouriteModel!.data!.toString());
+
+      emit(ShopSucessGetFavouriteState());
+    }).catchError((error) {
+      print(error.toString());
+      emit(ShopErrorGetFavouriteState());
+    });
+  }
 
   Usermodel? usermodel;
 

@@ -1,23 +1,42 @@
+import 'package:conditional_builder_null_safety/conditional_builder_null_safety.dart';
 import 'package:flutter/material.dart';
+import 'package:flutter_bloc/flutter_bloc.dart';
+import 'package:shopapp/busssines_logic_layer/Cubit/Cubit.dart';
+import 'package:shopapp/busssines_logic_layer/Cubit/states.dart';
+
+import '../../../Data_layer/Models/favouriteModel.dart';
+import '../../../Data_layer/Models/searchModel.dart';
 
 class FavouriteScreen extends StatelessWidget {
   const FavouriteScreen({Key? key}) : super(key: key);
 
   @override
   Widget build(BuildContext context) {
-    return ListView.separated(
-      itemBuilder: (context, index) => buildFAVItem(),
-
-      separatorBuilder: (context, index) => Divider(
-        thickness: 2.0,
-        color: Colors.black,
-      ),
-      itemCount: 10,
+    return BlocConsumer<ShopCubit, ShopStates>(
+      listener: (context, state) {},
+      builder: (context, state) {
+        return ConditionalBuilder(
+          condition: state is! ShopLoadingGetFavouriteState,
+          builder: (context) => ListView.separated(
+            itemBuilder: (context, index) => buildFAVItem(ShopCubit.get(context)
+                .favouriteModel!
+                .data!
+                .data![index]
+                .product!),
+            separatorBuilder: (context, index) => Divider(
+              thickness: 2.0,
+              color: Colors.black,
+            ),
+            itemCount:
+                ShopCubit.get(context).favouriteModel!.data!.data!.length,
+          ),
+          fallback: (context) => const Center(child: CircularProgressIndicator()),
+        );
+      },
     );
   }
 
-  Widget buildFAVItem()
-  {
+  Widget buildFAVItem(model) {
     return Padding(
       padding: const EdgeInsets.all(15.0),
       child: Container(
@@ -28,22 +47,21 @@ class FavouriteScreen extends StatelessWidget {
               alignment: AlignmentDirectional.bottomStart,
               children: [
                 Image(
-                  image: NetworkImage('https://upload.wikimedia.org/wikipedia/commons/thumb/b/b6/Image_created_with_a_mobile_phone.png/640px-Image_created_with_a_mobile_phone.png'),
+                  image: NetworkImage('${model.image}'),
                   fit: BoxFit.cover,
                   width: 120.0,
                   height: 120.0,
                 ),
-                if (1 != 0)
-                  Container(
-                    color: Colors.red,
-                    child: Text(
-                      'DISCOUNT',
-                      style: TextStyle(
-                        fontSize: 10,
-                        color: Colors.white,
-                      ),
+                Container(
+                  color: Colors.red,
+                  child: Text(
+                    '${model.discount}',
+                    style: TextStyle(
+                      fontSize: 10,
+                      color: Colors.white,
                     ),
                   ),
+                ),
               ],
             ),
             const SizedBox(width: 20),
@@ -55,7 +73,7 @@ class FavouriteScreen extends StatelessWidget {
                   crossAxisAlignment: CrossAxisAlignment.start,
                   children: [
                     Text(
-                      'i phone',
+                      '${model.name}',
                       maxLines: 2,
                       overflow: TextOverflow.ellipsis,
                       style: TextStyle(fontSize: 14, height: 1.3),
@@ -64,7 +82,7 @@ class FavouriteScreen extends StatelessWidget {
                     Row(
                       children: [
                         Text(
-                          '20000',
+                          '${model.price}',
                           maxLines: 2,
                           overflow: TextOverflow.ellipsis,
                           style: TextStyle(fontSize: 12, color: Colors.blue),
@@ -72,7 +90,7 @@ class FavouriteScreen extends StatelessWidget {
                         SizedBox(width: 5),
                         if (1 != 0)
                           Text(
-                            '50000',
+                            '${model.oldPrice}',
                             maxLines: 2,
                             overflow: TextOverflow.ellipsis,
                             style: TextStyle(
@@ -88,7 +106,7 @@ class FavouriteScreen extends StatelessWidget {
                             },
                             icon: CircleAvatar(
                               radius: 15.0,
-                              backgroundColor:true? Colors.blue:Colors.grey,
+                              backgroundColor: true ? Colors.blue : Colors.grey,
                               child: Icon(
                                 Icons.favorite,
                                 color: Colors.white,
@@ -105,5 +123,4 @@ class FavouriteScreen extends StatelessWidget {
       ),
     );
   }
-
 }

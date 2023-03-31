@@ -33,6 +33,7 @@ class ShopErrorFavouriteState extends ShopStates{}
 
 
 class ShopSucessGetFavouriteState extends ShopStates{}
+class ShopLoadingGetFavouriteState extends ShopStates{}
 
 class ShopErrorGetFavouriteState extends ShopStates{}
 
